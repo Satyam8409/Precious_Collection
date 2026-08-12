@@ -1,124 +1,32 @@
-import { useEffect, useState } from "react";
 import { MarketplaceEmpty } from "../components/marketplace/MarketplaceEmpty";
 import { MarketplaceError } from "../components/marketplace/MarketplaceError";
 import { MarketplaceGrid } from "../components/marketplace/MarketplaceGrid";
-import { type MarketplaceItem } from "../components/marketplace/MarketplaceCard";
 import { MarketplaceSkeleton } from "../components/marketplace/MarketplaceSkeleton";
-
-const MARKETPLACE_URL = "http://localhost:3000/marketplace";
+import { useMarketplace } from "../hooks/useMarketplace";
 const FALLBACK_IMAGE =
   "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23e5e7eb'/%3E%3Cpath d='M220 380l95-115 85 98 62-72 118 139H220z' fill='%23cbd5e1'/%3E%3Ccircle cx='310' cy='235' r='36' fill='%23cbd5e1'/%3E%3Ctext x='50%25' y='87%25' text-anchor='middle' font-family='Arial, sans-serif' font-size='28' fill='%236b7280'%3EImage unavailable%3C/text%3E%3C/svg%3E";
 
-type SortOption = "newest" | "price-low-high" | "price-high-low";
-
 export const Marketplace = () => {
-  const [items, setItems] = useState<MarketplaceItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
-  const [searchText, setSearchText] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedCondition, setSelectedCondition] = useState("all");
-  const [sortBy, setSortBy] = useState<SortOption>("newest");
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const loadMarketplace = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch(MARKETPLACE_URL, {
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to load marketplace data (${response.status})`,
-          );
-        }
-
-        const data: MarketplaceItem[] = await response.json();
-        setItems(data);
-      } catch (fetchError) {
-        if (
-          fetchError instanceof DOMException &&
-          fetchError.name === "AbortError"
-        ) {
-          return;
-        }
-
-        setError(
-          fetchError instanceof Error
-            ? fetchError.message
-            : "Unable to load marketplace data.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadMarketplace();
-
-    return () => controller.abort();
-  }, []);
-
-  const formatPrice = (price?: number) => {
-    return price !== undefined
-      ? `₹${price.toLocaleString("en-IN")}`
-      : "Price unavailable";
-  };
-
-  const handleImageError = (itemId: string) => {
-    setFailedImages((current) => ({
-      ...current,
-      [itemId]: true,
-    }));
-  };
-
-  const categories = Array.from(
-    new Set(items.map((item) => item.category ?? "Uncategorized")),
-  ).sort((a, b) => a.localeCompare(b));
-
-  const conditions = Array.from(
-    new Set(items.map((item) => item.condition ?? "Condition unavailable")),
-  ).sort((a, b) => a.localeCompare(b));
-
-  const normalizedSearch = searchText.trim().toLowerCase();
-  const isFiltering =
-    normalizedSearch.length > 0 ||
-    selectedCategory !== "all" ||
-    selectedCondition !== "all";
-
-  const filteredAndSortedItems = [...items]
-    .filter((item) => {
-      const title = (item.title ?? "").toLowerCase();
-      const category = item.category ?? "Uncategorized";
-      const condition = item.condition ?? "Condition unavailable";
-
-      const matchesSearch =
-        normalizedSearch.length === 0 || title.includes(normalizedSearch);
-      const matchesCategory =
-        selectedCategory === "all" || category === selectedCategory;
-      const matchesCondition =
-        selectedCondition === "all" || condition === selectedCondition;
-
-      return matchesSearch && matchesCategory && matchesCondition;
-    })
-    .sort((a, b) => {
-      if (sortBy === "price-low-high") {
-        return (a.price ?? Number.POSITIVE_INFINITY) -
-          (b.price ?? Number.POSITIVE_INFINITY);
-      }
-
-      if (sortBy === "price-high-low") {
-        return (b.price ?? Number.NEGATIVE_INFINITY) -
-          (a.price ?? Number.NEGATIVE_INFINITY);
-      }
-
-      return b.id.localeCompare(a.id);
-    });
+  const {
+    items,
+    loading,
+    error,
+    failedImages,
+    searchText,
+    setSearchText,
+    selectedCategory,
+    setSelectedCategory,
+    selectedCondition,
+    setSelectedCondition,
+    sortBy,
+    setSortBy,
+    categories,
+    conditions,
+    sortedItems,
+    isFiltering,
+    formatPrice,
+    handleImageError,
+  } = useMarketplace();
 
   if (loading) {
     return <MarketplaceSkeleton />;
@@ -152,10 +60,10 @@ export const Marketplace = () => {
           </div>
         </div>
 
-        <div className="text-sm text-base-content/60">
-          {filteredAndSortedItems.length} listing
-          {filteredAndSortedItems.length === 1 ? "" : "s"} shown
-        </div>
+          <div className="text-sm text-base-content/60">
+            {sortedItems.length} listing
+            {sortedItems.length === 1 ? "" : "s"} shown
+          </div>
       </div>
 
       <div className="rounded-2xl bg-base-100 p-4 shadow-sm ring-1 ring-base-200">
@@ -216,7 +124,7 @@ export const Marketplace = () => {
             <select
               className="select select-bordered w-full"
               value={sortBy}
-              onChange={(event) => setSortBy(event.target.value as SortOption)}
+              onChange={(event) => setSortBy(event.target.value as typeof sortBy)}
             >
               <option value="newest">Newest</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -226,22 +134,22 @@ export const Marketplace = () => {
         </div>
       </div>
 
-      {filteredAndSortedItems.length === 0 ? (
+      {sortedItems.length === 0 ? (
         <MarketplaceEmpty
           title={
-            normalizedSearch.length > 0
+            searchText.trim().length > 0
               ? "No search results"
               : "No filtered results"
           }
-          description={
-            normalizedSearch.length > 0
-              ? `No listing title matches \"${searchText.trim()}\".`
-              : "No listings match the selected category and condition."
-          }
+            description={
+              searchText.trim().length > 0
+                ? `No listing title matches \"${searchText.trim()}\".`
+                : "No listings match the selected category and condition."
+            }
         />
       ) : (
         <MarketplaceGrid
-          items={filteredAndSortedItems}
+          items={sortedItems}
           failedImages={failedImages}
           fallbackImage={FALLBACK_IMAGE}
           onImageError={handleImageError}
@@ -249,7 +157,7 @@ export const Marketplace = () => {
         />
       )}
 
-      {isFiltering && filteredAndSortedItems.length > 0 && (
+      {isFiltering && sortedItems.length > 0 && (
         <p className="text-sm text-base-content/60">
           Filters applied to {items.length} total listing
           {items.length === 1 ? "" : "s"}.
