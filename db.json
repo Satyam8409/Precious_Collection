@@ -1,0 +1,226 @@
+{
+  "marketplace": [
+    {
+      "id": "market-001",
+      "title": "Antique Silver Coin 1891",
+      "category": "Coins",
+      "condition": "Good",
+      "price": 4500,
+      "sellerName": "Rahul Sharma",
+      "location": "Delhi",
+      "image": "https://images.unsplash.com/photo-1605792657660-596af9009e82"
+    },
+    {
+      "id": "market-002",
+      "title": "Natural Quartz Crystal",
+      "category": "Minerals",
+      "condition": "Excellent",
+      "price": 2800,
+      "sellerName": "Aman Verma",
+      "location": "Mumbai",
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "market-003",
+      "title": "Vintage Oil Painting",
+      "category": "Art",
+      "condition": "Good",
+      "price": 12500,
+      "sellerName": "Priya Mehta",
+      "location": "Jaipur",
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      "id": "market-004",
+      "title": "Classic Film Camera",
+      "category": "Vintage",
+      "condition": "Very Good",
+      "price": 8900,
+      "sellerName": "Arjun Kapoor",
+      "location": "Bengaluru",
+      "image": "https://images.unsplash.com/photo-1452780212940-6f5c0d14d848"
+    },
+    {
+      "id": "market-005",
+      "title": "Rare Fossil Specimen",
+      "category": "Fossils",
+      "condition": "Excellent",
+      "price": 15000,
+      "sellerName": "Rohan Gupta",
+      "location": "Pune",
+      "image": "https://images.unsplash.com/photo-1616690710400-a16d146927c5"
+    },
+    {
+      "id": "market-006",
+      "title": "Vintage Postage Stamp Set",
+      "category": "Stamps",
+      "condition": "Good",
+      "price": 3200,
+      "sellerName": "Neha Singh",
+      "location": "Kolkata",
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80"    },
+    {
+      "id": "market-007",
+      "title": "Polished Amethyst Cluster",
+      "category": "Minerals",
+      "condition": "Excellent",
+      "price": 6700,
+      "sellerName": "Vikram Joshi",
+      "location": "Hyderabad",
+      "image": "https://images.unsplash.com/photo-1618220179428-22790b461013"
+    },
+    {
+      "id": "market-008",
+      "title": "Handmade Ceramic Vase",
+      "category": "Ceramics",
+      "condition": "Very Good",
+      "price": 5400,
+      "sellerName": "Kavya Rao",
+      "location": "Chennai",
+      "image": "https://images.unsplash.com/photo-1610701596007-11502861dcfa"
+    },
+    {
+      "id": "market-009",
+      "title": "Vintage Playing Card Collection",
+      "category": "Cards",
+      "condition": "Good",
+      "price": 2100,
+      "sellerName": "Aditya Malhotra",
+      "location": "Noida",
+      "image": "https://images.unsplash.com/photo-1518895949257-7621c3c786d7"
+    },
+    {
+      "id": "market-010",
+      "title": "Antique Brass Telescope",
+      "category": "Antiques",
+      "condition": "Fair",
+      "price": 18500,
+      "sellerName": "Sameer Khan",
+      "location": "Ahmedabad",
+      "image": "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3"
+    }
+  ],
+
+  "community": [
+    {
+      "id": "community-001",
+      "user": {
+        "name": "Rahul Sharma",
+        "avatar": "https://i.pravatar.cc/150?img=12"
+      },
+      "image": "https://images.unsplash.com/photo-1605792657660-596af9009e82",
+      "caption": "Finally added this beautiful antique silver coin to my collection.",
+      "category": "Coins",
+      "likes": 42,
+      "comments": 8
+    },
+    {
+      "id": "community-002",
+      "user": {
+        "name": "Aman Verma",
+        "avatar": "https://i.pravatar.cc/150?img=11"
+      },
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80",
+      "caption": "Found this incredible quartz specimen during my latest trip.",
+      "category": "Minerals",
+      "likes": 67,
+      "comments": 13
+    },
+    {
+      "id": "community-003",
+      "user": {
+        "name": "Priya Mehta",
+        "avatar": "https://i.pravatar.cc/150?img=47"
+      },
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80",
+      "caption": "A small piece of art history that I am very happy to own.",
+      "category": "Art",
+      "likes": 31,
+      "comments": 5
+    },
+    {
+      "id": "community-004",
+      "user": {
+        "name": "Arjun Kapoor",
+        "avatar": "https://i.pravatar.cc/150?img=33"
+      },
+      "image": "https://images.unsplash.com/photo-1452780212940-6f5c0d14d848",
+      "caption": "My latest addition to the vintage camera shelf.",
+      "category": "Vintage",
+      "likes": 89,
+      "comments": 17
+    },
+    {
+      "id": "community-005",
+      "user": {
+        "name": "Neha Singh",
+        "avatar": "https://i.pravatar.cc/150?img=44"
+      },
+      "image": "https://images.unsplash.com/photo-1762969217496-32d784e7e557?auto=format&fit=crop&w=800&q=80",
+      "caption": "Does anyone know more about the history of these stamps?",
+      "category": "Stamps",
+      "likes": 24,
+      "comments": 11
+    },
+    {
+      "id": "community-006",
+      "user": {
+        "name": "Vikram Joshi",
+        "avatar": "https://i.pravatar.cc/150?img=51"
+      },
+      "image": "https://images.unsplash.com/photo-1618220179428-22790b461013",
+      "caption": "The colors on this amethyst are absolutely incredible.",
+      "category": "Minerals",
+      "likes": 54,
+      "comments": 9
+    },
+    {
+      "id": "community-007",
+      "user": {
+        "name": "Kavya Rao",
+        "avatar": "https://i.pravatar.cc/150?img=32"
+      },
+      "image": "https://images.unsplash.com/photo-1610701596007-11502861dcfa",
+      "caption": "I love collecting handmade ceramics from local artists.",
+      "category": "Ceramics",
+      "likes": 38,
+      "comments": 7
+    },
+    {
+      "id": "community-008",
+      "user": {
+        "name": "Aditya Malhotra",
+        "avatar": "https://i.pravatar.cc/150?img=15"
+      },
+      "image": "https://images.unsplash.com/photo-1518895949257-7621c3c786d7",
+      "caption": "Sharing one of my oldest playing card sets today.",
+      "category": "Cards",
+      "likes": 19,
+      "comments": 4
+    },
+    {
+      "id": "community-009",
+      "user": {
+        "name": "Sameer Khan",
+        "avatar": "https://i.pravatar.cc/150?img=68"
+      },
+      "image": "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3",
+      "caption": "This antique telescope has been in my family for decades.",
+      "category": "Antiques",
+      "likes": 73,
+      "comments": 16
+    },
+    {
+      "id": "community-010",
+      "user": {
+        "name": "Riya Patel",
+        "avatar": "https://i.pravatar.cc/150?img=48"
+      },
+      "image": "https://images.unsplash.com/photo-1531058020387-3be344556be6",
+      "caption": "Visited an amazing exhibition today and found so much inspiration.",
+      "category": "Art",
+      "likes": 56,
+      "comments": 10
+    }
+  ]
+}
