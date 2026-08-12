@@ -6,7 +6,7 @@ export const MarketplaceSkeleton = () => {
           key={index}
           className="card h-full overflow-hidden bg-base-100 shadow-sm ring-1 ring-base-200"
         >
-          <div className="skeleton aspect-[4/3] w-full rounded-b-none" />
+          <div className="skeleton aspect-4/3 w-full rounded-b-none" />
           <div className="card-body space-y-3">
             <div className="skeleton h-5 w-3/4" />
             <div className="skeleton h-4 w-1/2" />
