@@ -18,6 +18,9 @@ const CommunityDetails = lazy(() =>
 const Collection = lazy(() =>
   import("../pages/Collection").then((module) => ({ default: module.Collection }))
 );
+const SavedPosts = lazy(() =>
+  import("../pages/SavedPosts").then((module) => ({ default: module.SavedPosts }))
+);
 
 export const PublicRoutes = () => {
   return (
@@ -53,6 +56,14 @@ export const PublicRoutes = () => {
         element={
           <Suspense fallback={<MarketplaceSkeleton />}>
             <Collection />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/saved"
+        element={
+          <Suspense fallback={<CommunitySkeleton />}>
+            <SavedPosts />
           </Suspense>
         }
       />

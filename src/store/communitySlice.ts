@@ -1,5 +1,21 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+const SAVED_POSTS_STORAGE_KEY = "precious_collection_saved_posts";
+
+const loadSavedPostIdsFromStorage = (): string[] => {
+  try {
+    const item = localStorage.getItem(SAVED_POSTS_STORAGE_KEY);
+    if (!item) return [];
+    const parsed = JSON.parse(item);
+    if (Array.isArray(parsed) && parsed.every((id) => typeof id === "string")) {
+      return parsed;
+    }
+    return [];
+  } catch {
+    return [];
+  }
+};
+
 type CommunityState = {
   likedPostIds: string[];
   savedPostIds: string[];
@@ -7,7 +23,7 @@ type CommunityState = {
 
 const initialState: CommunityState = {
   likedPostIds: [],
-  savedPostIds: [],
+  savedPostIds: loadSavedPostIdsFromStorage(),
 };
 
 const communitySlice = createSlice({
@@ -19,8 +35,7 @@ const communitySlice = createSlice({
 
       if (state.likedPostIds.includes(postId)) {
         state.likedPostIds = state.likedPostIds.filter((id) => id !== postId);
-      } 
-      else {
+      } else {
         state.likedPostIds.push(postId);
       }
     },
@@ -30,9 +45,14 @@ const communitySlice = createSlice({
 
       if (state.savedPostIds.includes(postId)) {
         state.savedPostIds = state.savedPostIds.filter((id) => id !== postId);
-      } 
-      else {
+      } else {
         state.savedPostIds.push(postId);
+      }
+
+      try {
+        localStorage.setItem(SAVED_POSTS_STORAGE_KEY, JSON.stringify(state.savedPostIds));
+      } catch {
+        // ignore quota/storage errors
       }
     },
   },

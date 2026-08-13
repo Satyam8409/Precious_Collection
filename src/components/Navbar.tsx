@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 
 export const Navbar = () => {
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>`btn btn-ghost ${isActive ? "bg-primary text-primary-content" : ""}`;
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `btn btn-ghost ${isActive ? "bg-primary text-primary-content" : ""}`;
 
   return (
     <nav className="navbar bg-base-100 border-b border-base-300 px-4 md:px-8">
@@ -24,6 +25,10 @@ export const Navbar = () => {
           <NavLink to="/collection" className={navLinkClass}>
             My Collection
           </NavLink>
+
+          <NavLink to="/saved" className={navLinkClass}>
+            Saved Posts
+          </NavLink>
         </div>
 
         <div className="dropdown dropdown-end md:hidden">
@@ -45,6 +50,10 @@ export const Navbar = () => {
 
             <li>
               <NavLink to="/collection">My Collection</NavLink>
+            </li>
+
+            <li>
+              <NavLink to="/saved">Saved Posts</NavLink>
             </li>
           </ul>
         </div>
