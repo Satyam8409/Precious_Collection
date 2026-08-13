@@ -1,11 +1,23 @@
 import { CommunityEmpty } from "../components/community/CommunityEmpty";
 import { CommunityError } from "../components/community/CommunityError";
+import { CommunityFilters } from "../components/community/CommunityFilters";
 import { CommunityGrid } from "../components/community/CommunityGrid";
 import { CommunitySkeleton } from "../components/community/CommunitySkeleton";
 import { useCommunity } from "../hooks/useCommunity";
 
 export const Community = () => {
-  const { posts, loading, error, fallbackImage } = useCommunity();
+  const {
+    filteredPosts,
+    loading,
+    error,
+    fallbackImage,
+    searchText,
+    setSearchText,
+    selectedCategory,
+    setSelectedCategory,
+    categories,
+    hasActiveFilters,
+  } = useCommunity();
 
   if (loading) {
     return <CommunitySkeleton />;
@@ -30,12 +42,26 @@ export const Community = () => {
         </p>
       </div>
 
-      {posts.length === 0 
-      ? (
-        <CommunityEmpty />
+      <CommunityFilters
+        searchText={searchText}
+        onSearchTextChange={setSearchText}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        categories={categories}
+      />
+
+      {filteredPosts.length === 0 ? (
+        <CommunityEmpty
+          title={hasActiveFilters ? "No matching posts found" : undefined}
+          description={
+            hasActiveFilters
+              ? "No community posts match the current search or category filter."
+              : undefined
+          }
+        />
       ) 
       : (
-        <CommunityGrid posts={posts} fallbackImage={fallbackImage} />
+        <CommunityGrid posts={filteredPosts} fallbackImage={fallbackImage} />
       )}
     </section>
   );
