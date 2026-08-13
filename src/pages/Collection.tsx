@@ -1,84 +1,87 @@
-import { useAppSelector } from "../store/hooks";
+import { CollectionFilters } from "../components/collection/CollectionFilters";
+import { CollectionHeader } from "../components/collection/CollectionHeader";
 import { CollectionSection } from "../components/collection/CollectionSection";
+import { CollectionTabs } from "../components/collection/CollectionTabs";
+import { useCollection } from "../hooks/useCollection";
+import { type CollectionView } from "../hooks/useCollection";
+import { useAppSelector } from "../store/hooks";
+
+const collectionViews: Array<{ view: CollectionView; label: string }> = [
+  { view: "owned", label: "Owned" },
+  { view: "wishlist", label: "Wishlist" },
+  { view: "selling", label: "Selling" },
+];
 
 export const Collection = () => {
   const ownedItems = useAppSelector((state) => state.marketplaceCollection.collectionItems);
   const wishlistItems = useAppSelector((state) => state.marketplaceCollection.wishlistItems);
 
+  const {
+    activeView,
+    setActiveView,
+    searchText,
+    setSearchText,
+    selectedCategory,
+    setSelectedCategory,
+    sortBy,
+    setSortBy,
+    categories,
+    filteredItems,
+    hasActiveFilters,
+    activeItemCount,
+    activeViewConfig,
+  } = useCollection({ ownedItems, wishlistItems });
+
+  // const showCollectionControls = activeView !== "selling";
+  const trimmedSearchText = searchText.trim();
+  const hasNoResults = hasActiveFilters && filteredItems.length === 0;
+  const emptyTitle = hasNoResults
+    ? "No matching items"
+    : activeViewConfig.emptyTitle;
+  const emptyDescription = hasNoResults
+    ? trimmedSearchText.length > 0
+      ? `No items in ${activeViewConfig.title.toLowerCase()} match "${trimmedSearchText}".`
+      : `No items match the selected filters in ${activeViewConfig.title.toLowerCase()}.`
+    : activeViewConfig.emptyDescription;
+
   return (
     <section className="space-y-8">
-      <div className="rounded-3xl border border-base-200 bg-base-100 p-6 shadow-sm sm:p-8">
-        <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-          <div className="space-y-3">
-            <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              My Collection
-            </span>
+      <CollectionHeader ownedCount={ownedItems.length} wishlistCount={wishlistItems.length} />
 
-            <div>
-              <h1 className="max-w-3xl text-3xl font-bold tracking-tight text-base-content sm:text-4xl">
-                A clear view of what you own, save, and plan to sell
-              </h1>
+      <div className="rounded-3xl bg-base-100 p-5 shadow-sm ring-1 ring-base-200 sm:p-6">
+        <CollectionTabs
+          activeView={activeView}
+          collectionViews={collectionViews}
+          onSelectView={setActiveView}
+        />
 
-              <p className="mt-3 max-w-3xl text-sm text-base-content/70 sm:text-base">
-                This dashboard reads directly from the existing Redux collection
-                and wishlist arrays, then presents them as simple shelves with a
-                stronger visual hierarchy.
-              </p>
-            </div>
-          </div>
+        <CollectionFilters
+          activeViewTitle={activeViewConfig.title}
+          searchText={searchText}
+          onSearchTextChange={setSearchText}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          categories={categories}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
 
-          <div className="grid gap-3 sm:grid-cols-3 xl:min-w-105">
-            <div className="rounded-2xl bg-primary/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                Owned
-              </p>
-              <p className="mt-2 text-3xl font-bold text-base-content">
-                {ownedItems.length}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-secondary/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">
-                Wishlist
-              </p>
-              <p className="mt-2 text-3xl font-bold text-base-content">
-                {wishlistItems.length}
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-base-200 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-base-content/70">
-                Selling
-              </p>
-              <p className="mt-2 text-3xl font-bold text-base-content">0</p>
-            </div>
-          </div>
+        <div className="mt-5">
+          <CollectionSection
+            title={activeViewConfig.title}
+            description={activeViewConfig.description}
+            items={activeView === "selling" ? [] : filteredItems}
+            emptyTitle={emptyTitle}
+            emptyDescription={emptyDescription}
+          />
         </div>
       </div>
 
-      <CollectionSection
-        title="Owned"
-        description="Items you have already added to your collection from the marketplace."
-        items={ownedItems}
-        emptyTitle="No owned items yet"
-        emptyDescription="Add a marketplace item to your Collection to see it here."
-      />
-
-      <CollectionSection
-        title="Wishlist"
-        description="Items you have saved for later from the marketplace."
-        items={wishlistItems}
-        emptyTitle="No wishlist items yet"
-        emptyDescription="Add a marketplace item to your Wishlist to build this list."
-      />
-
-      <CollectionSection
-        title="Selling"
-        description="Items planned for sale will appear here once that flow is added."
-        items={[]}
-        emptyTitle="No selling items yet"
-        emptyDescription="This section is ready for future selling items."
-      />
+      <div className="text-sm text-base-content/60">
+        {activeView === "selling"
+          ? "Selling is currently empty."
+          : `${filteredItems.length} item${filteredItems.length === 1 ? "" : "s"} shown out of ${activeItemCount}.`}
+      </div>
     </section>
   );
 };

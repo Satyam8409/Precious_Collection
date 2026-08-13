@@ -1,23 +1,11 @@
 import { MarketplaceEmpty } from "../marketplace/MarketplaceEmpty";
-import { type MarketplaceItem } from "../marketplace/MarketplaceCard";
+import { type CollectionItemEntry } from "../../hooks/useCollection";
 import { CollectionItemCard } from "./CollectionItemCard";
-
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
-
-const getMockDateAdded = (index: number) => {
-  const date = new Date();
-  date.setDate(date.getDate() - index);
-  return dateFormatter.format(date);
-};
 
 type CollectionSectionProps = {
   title: string;
   description: string;
-  items: MarketplaceItem[];
+  items: CollectionItemEntry[];
   emptyTitle: string;
   emptyDescription: string;
 };
@@ -45,11 +33,11 @@ export const CollectionSection = ({title,description,items,emptyTitle,emptyDescr
       ) 
       : (
         <div className="space-y-4">
-          {items.map((item, index) => (
+          {items.map(({ item, dateAdded }) => (
             <CollectionItemCard
               key={item.id}
               item={item}
-              dateAdded={getMockDateAdded(index)}
+              dateAdded={dateAdded}
             />
           ))}
         </div>
