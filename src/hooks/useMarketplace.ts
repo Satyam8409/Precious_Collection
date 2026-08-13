@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { type MarketplaceItem } from "../components/marketplace/MarketplaceCard";
 import { MARKETPLACE_API_URL, formatMarketplacePrice } from "../constants/marketplace";
+import { useDebounce } from "./useDebounce";
 
 const EMPTY_IMAGE_STATE: Record<string, boolean> = {};
 
@@ -15,6 +16,7 @@ export const useMarketplace = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchText = searchParams.get("search") ?? "";
+  const debouncedSearchText = useDebounce(searchText, 300);
   const selectedCategory = searchParams.get("category") ?? "all";
   const selectedCondition = searchParams.get("condition") ?? "all";
 
@@ -58,7 +60,7 @@ export const useMarketplace = () => {
 
   const categories = Array.from(new Set(items.map((item) => item.category ?? "Uncategorized"))).sort();
   const conditions = Array.from(new Set(items.map((item) => item.condition ?? "Condition unavailable"))).sort();
-  const search = searchText.trim().toLowerCase();
+  const search = debouncedSearchText.trim().toLowerCase();
 
   const filteredItems = items.filter((item) => {
     const title = item.title?.toLowerCase() ?? "";

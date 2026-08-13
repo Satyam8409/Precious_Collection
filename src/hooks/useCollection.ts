@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { type MarketplaceItem } from "../components/marketplace/MarketplaceCard";
+import { useDebounce } from "./useDebounce";
 
 export type CollectionView = "owned" | "wishlist" | "selling";
 export type CollectionSortOption = "newest" | "value-low-high" | "value-high-low";
@@ -67,6 +68,7 @@ export const useCollection = ({ ownedItems, wishlistItems }: UseCollectionArgs) 
   const sortKey = `${activeView}Sort`;
 
   const searchText = searchParams.get(searchKey) ?? "";
+  const debouncedSearchText = useDebounce(searchText, 300);
   const selectedCategory = searchParams.get(categoryKey) ?? "all";
 
   const sortParam = searchParams.get(sortKey);
@@ -96,7 +98,7 @@ export const useCollection = ({ ownedItems, wishlistItems }: UseCollectionArgs) 
   else if (activeView === "wishlist") activeItems = wishlistItems;
 
   const categories = [...new Set(activeItems.map((item) => item.category ?? "Uncategorized"))].sort();
-  const searchQuery = searchText.trim().toLowerCase();
+  const searchQuery = debouncedSearchText.trim().toLowerCase();
 
   const filteredItems = activeItems.filter((item) => {
     const matchesSearch = item.title?.toLowerCase().includes(searchQuery) ?? false;

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "./useDebounce";
 
 export type CommunityPost = {
   id: string;
@@ -26,6 +27,7 @@ export const useCommunity = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchText = searchParams.get("search") ?? "";
+  const debouncedSearchText = useDebounce(searchText, 300);
   const selectedCategory = searchParams.get("category") ?? "all";
 
   const updateParam = (key: string, value: string, defaultValue: string) => {
@@ -80,7 +82,7 @@ export const useCommunity = () => {
   }, [posts]);
 
   const filteredPosts = useMemo(() => {
-    const search = searchText.trim().toLowerCase();
+    const search = debouncedSearchText.trim().toLowerCase();
 
     return posts.filter((post) => {
       const caption = post.caption?.toLowerCase() ?? "";
@@ -92,7 +94,7 @@ export const useCommunity = () => {
 
       return matchesSearch && matchesCategory;
     });
-  }, [posts, searchText, selectedCategory]);
+  }, [posts, debouncedSearchText, selectedCategory]);
 
   const hasActiveFilters =
     searchText.trim().length > 0 || selectedCategory !== "all";
