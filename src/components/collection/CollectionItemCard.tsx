@@ -1,12 +1,22 @@
 import { type MarketplaceItem } from "../marketplace/MarketplaceCard";
 import {MARKETPLACE_FALLBACK_IMAGE,formatMarketplacePrice} from "../../constants/marketplace";
+import { type CollectionView } from "../../hooks/useCollection";
 
 type CollectionItemCardProps = {
   item: MarketplaceItem;
   dateAdded: string;
+  currentView: CollectionView;
+  onRemoveItem: (item: MarketplaceItem) => void;
+  onMoveItem: (item: MarketplaceItem, destination: CollectionView) => void;
 };
 
-export const CollectionItemCard = ({ item, dateAdded }: CollectionItemCardProps) => {
+const collectionMoveTargets: Record<CollectionView, CollectionView[]> = {
+  owned: ["wishlist", "selling"],
+  wishlist: ["owned", "selling"],
+  selling: ["owned", "wishlist"],
+};
+
+export const CollectionItemCard = ({ item, dateAdded, currentView, onRemoveItem, onMoveItem }: CollectionItemCardProps) => {
   const imageSource = item.image || MARKETPLACE_FALLBACK_IMAGE;
 
   return (
@@ -63,6 +73,27 @@ export const CollectionItemCard = ({ item, dateAdded }: CollectionItemCardProps)
                 {dateAdded}
               </p>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-2 border-t border-base-200 pt-4 sm:flex-row sm:flex-wrap">
+            <button
+              type="button"
+              className="btn btn-sm btn-outline btn-error"
+              onClick={() => onRemoveItem(item)}
+            >
+              Remove
+            </button>
+
+            {collectionMoveTargets[currentView].map((destination) => (
+              <button
+                key={destination}
+                type="button"
+                className="btn btn-sm btn-ghost"
+                onClick={() => onMoveItem(item, destination)}
+              >
+                Move to {destination === "owned" ? "Owned" : destination === "wishlist" ? "Wishlist" : "Selling"}
+              </button>
+            ))}
           </div>
         </div>
       </div>

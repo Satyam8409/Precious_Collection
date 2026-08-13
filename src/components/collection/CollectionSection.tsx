@@ -1,6 +1,8 @@
 import { MarketplaceEmpty } from "../marketplace/MarketplaceEmpty";
 import { type CollectionItemEntry } from "../../hooks/useCollection";
+import { type CollectionView } from "../../hooks/useCollection";
 import { CollectionItemCard } from "./CollectionItemCard";
+import { type MarketplaceItem } from "../marketplace/MarketplaceCard";
 
 type CollectionSectionProps = {
   title: string;
@@ -8,9 +10,12 @@ type CollectionSectionProps = {
   items: CollectionItemEntry[];
   emptyTitle: string;
   emptyDescription: string;
+  currentView: CollectionView;
+  onRemoveItem: (item: MarketplaceItem) => void;
+  onMoveItem: (item: MarketplaceItem, destination: CollectionView) => void;
 };
 
-export const CollectionSection = ({title,description,items,emptyTitle,emptyDescription}: CollectionSectionProps) => {
+export const CollectionSection = ({title,description,items,emptyTitle,emptyDescription,currentView,onRemoveItem,onMoveItem}: CollectionSectionProps) => {
   return (
     <section className="rounded-3xl bg-base-100 p-5 shadow-sm ring-1 ring-base-200 sm:p-6">
       <div className="mb-5 flex flex-col gap-3 border-b border-base-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
@@ -38,6 +43,9 @@ export const CollectionSection = ({title,description,items,emptyTitle,emptyDescr
               key={item.id}
               item={item}
               dateAdded={dateAdded}
+              currentView={currentView}
+              onRemoveItem={onRemoveItem}
+              onMoveItem={onMoveItem}
             />
           ))}
         </div>

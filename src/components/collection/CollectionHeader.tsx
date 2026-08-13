@@ -1,9 +1,10 @@
 type CollectionHeaderProps = {
   ownedCount: number;
   wishlistCount: number;
+  sellingCount: number;
 };
 
-export const CollectionHeader = ({ ownedCount, wishlistCount }: CollectionHeaderProps) => {
+export const CollectionHeader = ({ ownedCount, wishlistCount, sellingCount }: CollectionHeaderProps) => {
   return (
     <div className="rounded-3xl border border-base-200 bg-base-100 p-6 shadow-sm sm:p-8">
       <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
@@ -48,7 +49,9 @@ export const CollectionHeader = ({ ownedCount, wishlistCount }: CollectionHeader
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-base-content/70">
               Selling
             </p>
-            <p className="mt-2 text-3xl font-bold text-base-content">0</p>
+            <p className="mt-2 text-3xl font-bold text-base-content">
+              {sellingCount}
+            </p>
           </div>
         </div>
       </div>
