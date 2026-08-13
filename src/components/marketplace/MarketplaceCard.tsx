@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { MarketplaceItemActions } from "./MarketplaceItemActions";
 
 export type MarketplaceItem = {
   id: string;
@@ -25,11 +26,8 @@ export const MarketplaceCard = ({
   formatPrice,
 }: MarketplaceCardProps) => {
   return (
-    <Link
-      to={`/marketplace/${item.id}`}
-      className="block h-full transition-transform duration-200 hover:-translate-y-1"
-    >
-      <article className="card h-full overflow-hidden bg-base-100 shadow-sm ring-1 ring-base-200 transition-shadow duration-200 hover:shadow-md">
+    <article className="card h-full overflow-hidden bg-base-100 shadow-sm ring-1 ring-base-200 transition-shadow duration-200 hover:-translate-y-1 hover:shadow-md">
+      <Link to={`/marketplace/${item.id}`} className="block h-full">
         <figure className="relative aspect-4/3 bg-base-200">
           <img
             src={imageSource}
@@ -76,7 +74,11 @@ export const MarketplaceCard = ({
             </div>
           </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+
+      <div className="px-6 pb-6">
+        <MarketplaceItemActions item={item} />
+      </div>
+    </article>
   );
 };

@@ -1,4 +1,5 @@
 import { type MarketplaceItem } from "../marketplace/MarketplaceCard";
+import { MarketplaceItemActions } from "../marketplace/MarketplaceItemActions";
 
 type MarketplaceProductDetailsProps = {
   item: MarketplaceItem;
@@ -63,6 +64,10 @@ export const MarketplaceProductDetails = ({
         <div className="mt-8 rounded-2xl border border-base-200 bg-base-50 p-4 text-sm text-base-content/70">
           This page shows the selected marketplace product using the existing
           JSON Server data source.
+        </div>
+
+        <div className="mt-6">
+          <MarketplaceItemActions item={item} />
         </div>
       </div>
     </div>
