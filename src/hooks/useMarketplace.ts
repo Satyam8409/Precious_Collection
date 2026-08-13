@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { type MarketplaceItem } from "../components/marketplace/MarketplaceCard";
-
-const MARKETPLACE_URL = "http://localhost:3000/marketplace";
+import {
+  MARKETPLACE_API_URL,
+  formatMarketplacePrice,
+} from "../constants/marketplace";
 
 const EMPTY_IMAGE_STATE: Record<string, boolean> = {};
 
@@ -29,7 +31,7 @@ export const useMarketplace = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(MARKETPLACE_URL, {
+        const response = await fetch(MARKETPLACE_API_URL, {
           signal: controller.signal,
         });
 
@@ -108,12 +110,6 @@ export const useMarketplace = () => {
     selectedCategory !== "all" ||
     selectedCondition !== "all";
 
-  const formatPrice = (price?: number) => {
-    return price !== undefined
-      ? `₹${price.toLocaleString("en-IN")}`
-      : "Price unavailable";
-  };
-
   const handleImageError = (itemId: string) => {
     setFailedImages((current) => ({
       ...current,
@@ -138,7 +134,7 @@ export const useMarketplace = () => {
     conditions,
     sortedItems,
     isFiltering,
-    formatPrice,
+    formatPrice: formatMarketplacePrice,
     handleImageError,
   };
 };

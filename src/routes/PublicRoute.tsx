@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Marketplace } from "../pages/Marketplace";
+import { MarketplaceDetails } from "../pages/MarketplaceDetails";
 import { Community } from "../pages/Community";
 import { Collection } from "../pages/Collection";
 
@@ -8,6 +9,7 @@ export const PublicRoutes = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/marketplace" replace />} />
       <Route path="/marketplace" element={<Marketplace />} />
+      <Route path="/marketplace/:id" element={<MarketplaceDetails />} />
       <Route path="/community" element={<Community />} />
       <Route path="/collection" element={<Collection />} />
     </Routes>

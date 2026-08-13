@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 export const Navbar = () => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>`btn btn-ghost ${isActive ? "bg-primary text-primary-content" : ""}`;
