@@ -10,6 +10,7 @@ export type MarketplaceItem = {
   sellerName?: string;
   location?: string;
   image?: string;
+  dateAdded?: string;
 };
 
 type MarketplaceCardProps = {

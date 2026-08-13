@@ -31,7 +31,10 @@ const addItemToCollectionList = (
   const exists = collectionItems.some((existingItem) => existingItem.id === item.id);
 
   if (!exists) {
-    collectionItems.push(item);
+    collectionItems.push({
+      ...item,
+      dateAdded: item.dateAdded ?? new Date().toISOString(),
+    });
   }
 };
 
@@ -53,13 +56,7 @@ const marketplaceCollectionSlice = createSlice({
       state,
       action: PayloadAction<MarketplaceItem>,
     ) => {
-      const exists = state.collectionItems.some(
-        (item) => item.id === action.payload.id,
-      );
-
-      if (!exists) {
-        state.collectionItems.push(action.payload);
-      }
+      addItemToCollectionList(state, "collectionItems", action.payload);
     },
 
     addItemToWishlist: (

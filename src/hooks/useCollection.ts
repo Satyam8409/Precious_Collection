@@ -55,10 +55,10 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-const getMockDateAdded = (index: number) => {
-  const date = new Date();
-  date.setDate(date.getDate() - index);
-
+const formatDateAdded = (dateString?: string) => {
+  if (!dateString) return "Recently";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString;
   return dateFormatter.format(date);
 };
 
@@ -116,9 +116,9 @@ export const useCollection = ({ownedItems,wishlistItems}: UseCollectionArgs) => 
   });
 
   const itemsWithMetadata: CollectionItemEntry[] = sortedItems.map(
-    (item, index) => ({
+    (item) => ({
       item,
-      dateAdded: getMockDateAdded(index),
+      dateAdded: formatDateAdded(item.dateAdded),
     }),
   );
 

@@ -21,16 +21,15 @@ const collectionLabels: Record<CollectionView, string> = {
   selling: "Selling",
 };
 
-const getMockDateAdded = (index: number) => {
+const formatDateAdded = (dateString?: string) => {
+  if (!dateString) return "Recently";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString;
   const dateFormatter = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
-
-  const date = new Date();
-  date.setDate(date.getDate() - index);
-
   return dateFormatter.format(date);
 };
 
@@ -71,9 +70,9 @@ const buildCollectionEntries = (
 ) => {
   const searchQuery = searchText.trim().toLowerCase();
 
-  const itemsWithMetadata: CollectionItemEntry[] = items.map((item, index) => ({
+  const itemsWithMetadata: CollectionItemEntry[] = items.map((item) => ({
     item,
-    dateAdded: getMockDateAdded(index),
+    dateAdded: formatDateAdded(item.dateAdded),
   }));
 
   const filteredItems = itemsWithMetadata.filter(({ item }) => {
